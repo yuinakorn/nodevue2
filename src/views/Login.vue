@@ -563,7 +563,7 @@ export default {
         })
       };
 
-      axios.request(cnf)
+      await axios.request(cnf)
         .then((response) => {
           console.log(JSON.stringify(response.data));
           if (response.data.status == "success" && response.data.result == 1) {
