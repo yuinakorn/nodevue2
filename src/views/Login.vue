@@ -182,6 +182,7 @@ export default {
       province: "",
       account_token: process.env.VUE_APP_ACCOUNT_TOKEN,
       serviceId: process.env.VUE_APP_SERVICE_ID,
+      client_id_random: "",
     };
   },
   beforeCreate() {
@@ -295,7 +296,7 @@ export default {
 
       // Step 1: Generate QR Code
       try {
-        const client_id_random = 'webview-' + Math.random().toString(36).substring(2, 10);
+        this.client_id_random = process.env.APP_VUE_SERVICE_NAME+'-' + Math.random().toString(36).substring(2, 10);
         this.hcode = document.cookie.split(';').find(c => c.includes('hcode=')).split('=')[1];
         this.provcode = document.cookie.split(';').find(c => c.includes('provcode=')).split('=')[1];
 
@@ -304,7 +305,7 @@ export default {
 
         this.province = document.cookie.split(';').find(c => c.includes('provcode=')).split('=')[1];
         const state = {
-          state: `${this.serviceId}|${client_id_random}|${this.province}|${this.hcode}|${ipAddress}|${os}`,
+          state: `${this.serviceId}|${this.client_id_random}|${this.province}|${this.hcode}|${ipAddress}|${os}`,
         };
         console.log("provice " + this.province);
         const state_encode = qs.stringify(state);
@@ -332,7 +333,7 @@ export default {
             // Step 3: check active from database
             // do after 7 sec pass wait for user scan QR code after that check database
             setTimeout(() => {
-              this.callApi(client_id_random);
+              this.callApi(this.client_id_random);
             }, 7000);
           })
           .catch((error) => {
@@ -378,8 +379,8 @@ export default {
               // console.log('status code: ' + response.status);
 
               // get CID from response scope and send to ihims for check permission
-              const res_scope = response.data.scope.split(',');
-              this.checkPermiss(res_scope[0]);
+              // const res_scope = response.data.scope.split(',');
+              this.checkPermiss(client_id);
               // ปิดการเช็ค active
               clearInterval(this.interval);
             }
@@ -393,46 +394,42 @@ export default {
       }
     },
     // Step 5 last: check permission 
-    async checkPermiss(cid) {
+    // async checkPermiss(cid) {
+    async checkPermiss(client_id) {
       // show loading...
       this.isLoading = true;
 
-      let url = `${process.env.VUE_APP_URL_EXP}/user_authen_cid/${this.hcode}/?cid=${cid}`;
+      // let url = `${process.env.VUE_APP_URL_EXP}/user_authen_cid/${this.hcode}/?cid=${cid}`;
+      let url = `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${client_id}`;
       console.log(url);
       let config = {
-        method: 'get',
+        method: 'post',
         url: url,
       };
       // Step 5.1: Check position allow
-      const position_allow = ['พยาบาล', 'แพทย์', 'คอม'];
-      console.log(position_allow);
-      // const position_allow = ['แพทย์'];
+      // const position_allow = ['พยาบาล', 'แพทย์', 'คอม'];
+      // console.log(position_allow);
+
       try {
         await axios.request(config)
           .then((response) => {
 
-            let my_position = response.data[0].position;
-
-            if (position_allow.some(p => my_position.includes(p))) {
-
-              console.log('The position contains');
-              // Your further logic here
+            if(response.status == 200 && response.data.active == "1" && response.level !== 0){
+              console.log("is true");
               // create cookie and limit time 8 hours
               const d = new Date();
               d.setTime(d.getTime() + 8 * 60 * 60 * 1000); // 8 hours
 
               let expires = "expires=" + d.toUTCString();
-              document.cookie = "username=" + response.data[0].loginname + ";" + expires + ";path=/";
-              document.cookie = "cid=" + response.data[0].cid + ";" + expires + ";path=/";
-              document.cookie = "position=" + response.data[0].position + ";" + expires + ";path=/";
+              document.cookie = "username=" + response.data.username + ";" + expires + ";path=/";
+              document.cookie = "cid=" + response.data.cid + ";" + expires + ";path=/";
+              document.cookie = "position=" + response.data.position + ";" + expires + ";path=/";
 
               // redirect to search page
               this.$router.push("/search");
-
             } else {
-              // The 'position' doesn't contain 'คอม'
-              console.log('The position does not contain ');
-              // Your further logic here
+              // console.log("is false");
+              this.showRedAlert();
             }
 
           })
@@ -472,7 +469,7 @@ export default {
     showRedAlert() {
       Swal.fire({
         title: 'ไม่สามารถเข้าใช้งานได้!!!',
-        text: 'กรุณาแจ้งผู้ดูแลระบบ ตรวจสอบสิทธิในระบบ iHIMS',
+        text: 'กรุณาแจ้งผู้ดูแลระบบ ตรวจสอบสิทธิในระบบ HIS ของท่าน',
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#016b5f',
