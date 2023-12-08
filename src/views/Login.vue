@@ -181,7 +181,7 @@ export default {
       isChecked: true,
       province: "",
       account_token: process.env.VUE_APP_ACCOUNT_TOKEN,
-      serviceId: 1,
+      serviceId: process.env.VUE_APP_SERVICE_ID,
     };
   },
   beforeCreate() {
