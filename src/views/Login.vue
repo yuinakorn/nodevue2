@@ -362,7 +362,7 @@ export default {
 
         let config = {
           method: 'post',
-          url: `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${this.client_id_random}`,
+          url: `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${client_id}`,
           headers: {
             'Content-Type': 'application/json'
           },
@@ -398,27 +398,28 @@ export default {
     // async checkPermiss(cid) {
     async checkPermiss(client_id) {
       // show loading...
-      this.isLoading = true;
+      try {
+        // Step 5.1: Check position allow
 
-      let data = JSON.stringify({
+        this.isLoading = true;
+
+        let data = JSON.stringify({
           "account_token": this.account_token,
         });
-      // let url = `${process.env.VUE_APP_URL_EXP}/user_authen_cid/${this.hcode}/?cid=${cid}`;
-      let url = `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${client_id}`;
-      console.log(url);
-      let config = {
-        method: 'post',
-        url: url,
-        headers: {
+        // let url = `${process.env.VUE_APP_URL_EXP}/user_authen_cid/${this.hcode}/?cid=${cid}`;
+        let url = `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${client_id}`;
+        console.log(url);
+        let config = {
+          method: 'post',
+          url: url,
+          headers: {
             'Content-Type': 'application/json'
           },
           data: data
-      };
-      // Step 5.1: Check position allow
-      // const position_allow = ['พยาบาล', 'แพทย์', 'คอม'];
-      // console.log(position_allow);
+        };
 
-      try {
+        console.log("data= " + data)
+
         axios.request(config)
           .then((response) => {
             console.log(JSON.stringify(response.data));
