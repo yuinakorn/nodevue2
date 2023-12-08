@@ -492,10 +492,6 @@ li {
   margin: 0 10px;
 }
 
-a {
-  /*color: #42b983;*/
-}
-
 .my-scroll-box {
   height: 80vh;
   overflow-y: scroll;
