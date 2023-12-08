@@ -296,7 +296,7 @@ export default {
 
       // Step 1: Generate QR Code
       try {
-        this.client_id_random = process.env.APP_VUE_SERVICE_NAME+'-' + Math.random().toString(36).substring(2, 10);
+        this.client_id_random = process.env.APP_VUE_SERVICE_NAME + '-' + Math.random().toString(36).substring(2, 10);
         this.hcode = document.cookie.split(';').find(c => c.includes('hcode=')).split('=')[1];
         this.provcode = document.cookie.split(';').find(c => c.includes('provcode=')).split('=')[1];
 
@@ -307,6 +307,7 @@ export default {
         const state = {
           state: `${this.serviceId}|${this.client_id_random}|${this.province}|${this.hcode}|${ipAddress}|${os}`,
         };
+
         console.log("provice " + this.province);
         const state_encode = qs.stringify(state);
         const url = `${process.env.VUE_APP_URL_AUTH}/gen_qrcode/?${state_encode}`;
@@ -325,7 +326,7 @@ export default {
           data: body
         };
         // Step 2: open new window
-        axios.request(config)
+        await axios.request(config)
           .then((response) => {
 
             this.openAndCloseTab(response.data.url);
@@ -361,7 +362,7 @@ export default {
 
         let config = {
           method: 'post',
-          url: `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${client_id}`,
+          url: `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${this.client_id_random}`,
           headers: {
             'Content-Type': 'application/json'
           },
@@ -414,7 +415,7 @@ export default {
         await axios.request(config)
           .then((response) => {
 
-            if(response.status == 200 && response.data.active == "1" && response.level !== 0){
+            if (response.status == 200 && response.data.active == "1" && response.level !== 0) {
               console.log("is true");
               // create cookie and limit time 8 hours
               const d = new Date();
