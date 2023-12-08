@@ -150,8 +150,8 @@ import 'vue-select/dist/vue-select.css';
 
 import vSelect from 'vue-select'
 
-axios.defaults.baseURL = process.env.VUE_APP_URL_AUTH;
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'; // Adjust this based on your server's configuration
+// axios.defaults.baseURL = process.env.VUE_APP_URL_AUTH;
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'; // Adjust this based on your server's configuration
 
 
 // Add the solid style icons to the library
