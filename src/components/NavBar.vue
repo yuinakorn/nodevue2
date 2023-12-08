@@ -181,7 +181,6 @@ export default {
         }
       }).catch((error) => {
         console.log("error => " + error);
-        console.log("error code => " + error.response.status);
         if (error.response.status === 500) {
           axios.get(process.env.VUE_APP_DRUGALLERGY_URL + "/" + this.patientCid + "/t/" + tokens)
             .then(response => {
