@@ -377,11 +377,8 @@ export default {
               throw new Error('Cannot get data');
             } else {
               // until get data and api will remove client id from database for security
-              // console.log('status code: ' + response.status);
 
-              // get CID from response scope and send to ihims for check permission
-              // const res_scope = response.data.scope.split(',');
-              this.checkPermiss(client_id);
+              this.checkPermiss(response.data.active, response.data.level);
               // ปิดการเช็ค active
               clearInterval(this.interval);
             }
@@ -396,67 +393,27 @@ export default {
     },
     // Step 5 last: check permission 
     // async checkPermiss(cid) {
-    async checkPermiss(client_id) {
+    async checkPermiss(is_active, is_level) {
       // show loading...
-      try {
-        // Step 5.1: Check position allow
+      this.isLoading = true;
 
-        this.isLoading = true;
+      // Step 5.1: Check position allow
+      if (is_active == "1" && is_level !== 0) {
+        // create cookie and limit time 8 hours
+        const d = new Date();
+        d.setTime(d.getTime() + 8 * 60 * 60 * 1000); // 8 hours
 
-        let data = JSON.stringify({
-          "account_token": this.account_token,
-        });
-        // let url = `${process.env.VUE_APP_URL_EXP}/user_authen_cid/${this.hcode}/?cid=${cid}`;
-        let url = `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${client_id}`;
-        console.log(url);
-        let config = {
-          method: 'post',
-          url: url,
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          data: data
-        };
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = "username=" + this.username + ";" + expires + ";path=/";
+        document.cookie = "cid=" + this.cid + ";" + expires + ";path=/";
+        document.cookie = "position=" + this.position + ";" + expires + ";path=/";
 
-        console.log("data= " + data)
-
-        axios.request(config)
-          .then((response) => {
-            console.log(JSON.stringify(response.data));
-
-            if (response.status == 200 && response.data.active == "1" && response.level !== 0) {
-              console.log("is true");
-              // create cookie and limit time 8 hours
-              const d = new Date();
-              d.setTime(d.getTime() + 8 * 60 * 60 * 1000); // 8 hours
-
-              let expires = "expires=" + d.toUTCString();
-              document.cookie = "username=" + response.data.username + ";" + expires + ";path=/";
-              document.cookie = "cid=" + response.data.cid + ";" + expires + ";path=/";
-              document.cookie = "position=" + response.data.position + ";" + expires + ";path=/";
-
-              // redirect to search page
-              this.$router.push("/search");
-            } else {
-              console.log("is false");
-              this.showRedAlert();
-            }
-
-          })
-          .catch(() => {
-            console.log("catch");
-            this.showRedAlert();
-
-          }).finally(() => {
-            // close iframe
-            this.showIframe = false;
-            this.isLoading = false;
-            // ปิดการเช็ค active ทุก ๆ 2 วินาที
-            clearInterval(this.interval);
-          });
-      } catch (error) {
-        console.log(error)
+        // redirect to search page
+        this.$router.push("/search");
+      } else {
+        this.showRedAlert();
       }
+      
     },
     showToastAlert(time, icon, title) {
       const Toast = Swal.mixin({
