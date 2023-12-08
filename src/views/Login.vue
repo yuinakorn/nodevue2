@@ -150,6 +150,10 @@ import 'vue-select/dist/vue-select.css';
 
 import vSelect from 'vue-select'
 
+axios.defaults.baseURL = process.env.VUE_APP_URL_AUTH;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'; // Adjust this based on your server's configuration
+
+
 // Add the solid style icons to the library
 library.add(fas);
 require('dotenv').config();
@@ -555,7 +559,7 @@ export default {
           "account_token": this.account_token,
           "username": this.username,
           "password": this.password,
-          "hoscode": document.cookie.split(';').find(c => c.includes('hcode=')).split('=')[1],
+          "hoscode": this.selectedHospital.value,
         })
       };
 
