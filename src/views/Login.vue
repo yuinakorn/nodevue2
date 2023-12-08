@@ -419,7 +419,7 @@ export default {
       // console.log(position_allow);
 
       try {
-        await axios.request(config)
+        axios.request(config)
           .then((response) => {
             console.log(JSON.stringify(response.data));
 
@@ -437,13 +437,13 @@ export default {
               // redirect to search page
               this.$router.push("/search");
             } else {
-              // console.log("is false");
+              console.log("is false");
               this.showRedAlert();
             }
 
           })
           .catch(() => {
-            // console.log(error);
+            console.log("catch");
             this.showRedAlert();
 
           }).finally(() => {
