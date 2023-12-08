@@ -367,7 +367,7 @@ export default {
           data: data
         };
         // Step 4.2: if active get data from database
-        axios.request(config)
+        await axios.request(config)
           .then((response) => {
             // console.log(JSON.stringify(response.data));
             if (response.status !== 200) {
