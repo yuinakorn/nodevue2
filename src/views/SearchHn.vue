@@ -156,7 +156,5 @@ export default {
 </script>
 
 <style scope>
-body {
-    background-color: #cacaca;
-}
+
 </style>
