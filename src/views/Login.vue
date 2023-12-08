@@ -400,12 +400,19 @@ export default {
       // show loading...
       this.isLoading = true;
 
+      let data = JSON.stringify({
+          "account_token": this.account_token,
+        });
       // let url = `${process.env.VUE_APP_URL_EXP}/user_authen_cid/${this.hcode}/?cid=${cid}`;
       let url = `${process.env.VUE_APP_URL_AUTH}/active_by_id/?client_id=${client_id}`;
       console.log(url);
       let config = {
         method: 'post',
         url: url,
+        headers: {
+            'Content-Type': 'application/json'
+          },
+          data: data
       };
       // Step 5.1: Check position allow
       // const position_allow = ['พยาบาล', 'แพทย์', 'คอม'];
