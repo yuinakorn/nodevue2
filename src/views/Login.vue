@@ -421,6 +421,7 @@ export default {
       try {
         await axios.request(config)
           .then((response) => {
+            console.log(JSON.stringify(response.data));
 
             if (response.status == 200 && response.data.active == "1" && response.level !== 0) {
               console.log("is true");
