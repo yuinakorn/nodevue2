@@ -296,7 +296,7 @@ export default {
 
       // Step 1: Generate QR Code
       try {
-        this.client_id_random = process.env.APP_VUE_SERVICE_NAME + '-' + Math.random().toString(36).substring(2, 10);
+        this.client_id_random = process.env.VUE_APP_SERVICE_NAME + '-' + Math.random().toString(36).substring(2, 10);
         this.hcode = document.cookie.split(';').find(c => c.includes('hcode=')).split('=')[1];
         this.provcode = document.cookie.split(';').find(c => c.includes('provcode=')).split('=')[1];
 
