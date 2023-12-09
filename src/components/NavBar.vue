@@ -22,9 +22,9 @@
               <a class="nav-link active" aria-current="page" href="/search"><font-awesome-icon icon="search"
                   class="m-r-1" /> ค้นหาผู้ป่วยด้วย HN</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link active" href="#"><font-awesome-icon icon="address-card" class="m-r-1" />เกี่ยวกับระบบ</a>
-            </li>
+            </li> -->
           </ul>
           <!-- <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
