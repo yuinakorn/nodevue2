@@ -583,66 +583,6 @@ export default {
 
         });
 
-
-      // const url = process.env.VUE_APP_URL_EXP + `/user_authen/` + `${this.selectedHospital.value}?user=${this.username}&password=${this.password}`;
-      // console.log(url);
-      // let config = {
-      //   method: 'get',
-      //   url: url,
-      //   headers: {}
-      // };
-
-      // await axios.request(config)
-      //   .then((response) => {
-      //     console.log(JSON.stringify(response.data));
-
-      //     if (response.data && response.data.length > 0) {
-      //       const keywordsToCheck = ['แพทย์', 'พยาบาล', 'คอม'];
-      //       // conver to string
-      //       const position = JSON.stringify(response.data[0].entryposition);
-
-      //       const containsKeyword = keywordsToCheck.some((keyword) => {
-      //         return position.includes(keyword);
-      //       });
-
-      //       if (containsKeyword) {
-      //         console.log("is true");
-      //         // create cookie and limit time 8 hours
-      //         const d = new Date();
-      //         d.setTime(d.getTime() + 8 * 60 * 60 * 1000); // 8 hours
-
-      //         let expires = "expires=" + d.toUTCString();
-      //         document.cookie = "username=" + this.username + ";" + expires + ";path=/";
-      //         document.cookie = "cid=" + response.data[0].cid + ";" + expires + ";path=/";
-      //         document.cookie = "position=" + response.data[0].entryposition + ";" + expires + ";path=/";
-
-
-      //         d.setTime(d.getTime() + 14 * 24 * 60 * 60 * 1000); // 14 days
-      //         expires = "expires=" + d.toUTCString();
-      //         document.cookie = "hcode=" + this.selectedHospital.value + ";" + expires + ";path=/"; // 14 days
-      //         document.cookie = "hospitalName=" + this.selectedHospital.label + ";" + expires + ";path=/"; // 14 days
-
-      //         // print cookie username
-      //         let c_username = document.cookie.split(';').find(c => c.includes('username='));
-      //         console.log("username => " + c_username.split('=')[1]);
-
-      //         // redirect to search page
-      //         this.$router.push("/search");
-
-      //       }
-      //     } else {
-      //       console.log("is false");
-      //       this.loading = false;
-      //       Swal.fire({
-      //         icon: 'error',
-      //         title: 'เข้าสู่ระบบไม่สำเร็จ',
-      //         text: 'กรุณาตรวจสอบ Username และ Password อีกครั้ง',
-      //       })
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
     },
   },
 };
