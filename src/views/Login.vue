@@ -529,6 +529,9 @@ export default {
         })
       };
 
+      console.log(cnf);
+      
+
       await axios.request(cnf)
         .then((response) => {
           console.log(JSON.stringify(response.data));
