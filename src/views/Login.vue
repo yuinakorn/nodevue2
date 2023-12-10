@@ -183,6 +183,7 @@ export default {
       account_token: process.env.VUE_APP_ACCOUNT_TOKEN,
       serviceId: process.env.VUE_APP_SERVICE_ID,
       client_id_random: "",
+      thaid_id: process.env.VUE_APP_THAID_ID,
     };
   },
   beforeCreate() {
@@ -335,7 +336,7 @@ export default {
             // do after 7 sec pass wait for user scan QR code after that check database
             setTimeout(() => {
               this.callApi(this.client_id_random);
-            }, 7000);
+            }, 5000);
           })
           .catch((error) => {
             console.log(error);
@@ -524,6 +525,7 @@ export default {
           "username": this.username,
           "password": this.password,
           "hoscode": this.selectedHospital.value,
+          "thaid_id": this.thaid_id
         })
       };
 
