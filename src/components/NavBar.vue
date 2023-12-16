@@ -62,7 +62,9 @@
       </div>
       <div class="col ps-4">
         <div class="d-block" id="telemed"><span class="fw-bold">เลขบัตรประชาชน:</span> {{ patient.cid }}
-
+        </div>
+        <div class="d-block">
+          <span class="fw-bold">HN:</span> {{ patient.hn }}
         </div>
         <span v-show="isToggle"></span>
         <div class="d-block">
@@ -144,29 +146,7 @@ export default {
     this.username = decode.username;
     this.cid = decode.cid; // user cid
     this.doctor_hoscode = decode.hosCode; // user hoscode
-    // this.patientHosCode = patientHosCode;
-    // this.patientCid = patientCid;
 
-    // let url = process.env.VUE_APP_VACCINEURL + "/?c=" + this.patientCid;
-    // console.log("navbar_url=>" + url);
-
-    // axios.get(url)
-    //   .then(response => {
-    //     this.imms = response.data;
-    //     let dose_arr = response.data;
-    //     let maxDose = Math.max.apply(Math, dose_arr.map(function (o) {
-    //       return o.vaccine_dose_no;
-    //     }));
-    //     this.max_date_vac = dose_arr.find(x => x.vaccine_dose_no === maxDose).vaccine_date;
-    //     // console.log(this.visits);
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //   })
-    // .then(function () {
-    //   // always executed
-    // });
 
     axios.get(process.env.VUE_APP_DRUGALLERGY_URL + "/" + this.patientCid + "/t/" + tokens)
       .then(response => {
@@ -368,7 +348,7 @@ header {
   border-radius: 5px;
   max-width: 100%;
   padding-left: 1rem;
-  border: 1px solid #e6b3b3;
+  /* border: 1px solid #e6b3b3; */
   /*margin-right: 1rem;*/
   /*width: 49rem;*/
 }
