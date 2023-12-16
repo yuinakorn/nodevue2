@@ -123,7 +123,7 @@
             <div>
               <!-- check box to remember it -->
               <input type="checkbox" id="remember" name="remember" value="remember" v-model="isChecked" disabled>
-              <label class="ms-1" for="remember">จำค่าไว้ 14 วัน</label>
+              <label class="ms-1" for="remember">จำค่าไว้ 30 วัน</label>
             </div>
             <div>
               <button @click="saveModal" type="button" class="btn btn-primary" data-bs-dismiss="modal">บันทึก</button>
@@ -184,6 +184,7 @@ export default {
       serviceId: process.env.VUE_APP_SERVICE_ID,
       client_id_random: "",
       thaid_id: process.env.VUE_APP_THAID_ID,
+      day_expire: 30,
     };
   },
   beforeCreate() {
@@ -229,9 +230,9 @@ export default {
     },
     async saveModal() {
       console.log("save modal");
-      // create cookie and limit time 14 day
+      // create cookie and limit time 30 day
       const d = new Date();
-      d.setTime(d.getTime() + 14 * 24 * 60 * 60 * 1000); // 14 day
+      d.setTime(d.getTime() + this.day_expire * 24 * 60 * 60 * 1000); // 30 day
       let expires = "expires=" + d.toUTCString();
       document.cookie = "hcode=" + this.selectedHospital.value + ";" + expires + ";path=/;";
       document.cookie = "hname=" + this.selectedHospital.label + ";" + expires + ";path=/;";
@@ -547,10 +548,10 @@ export default {
             document.cookie = "position=" + response.data.detail[0].entryposition + ";" + expires + ";path=/";
 
 
-            d.setTime(d.getTime() + 14 * 24 * 60 * 60 * 1000); // 14 days
+            d.setTime(d.getTime() + this.day_expire * 24 * 60 * 60 * 1000); // 30 days
             expires = "expires=" + d.toUTCString();
-            document.cookie = "hcode=" + this.selectedHospital.value + ";" + expires + ";path=/"; // 14 days
-            document.cookie = "hospitalName=" + this.selectedHospital.label + ";" + expires + ";path=/"; // 14 days
+            document.cookie = "hcode=" + this.selectedHospital.value + ";" + expires + ";path=/"; // 30 days
+            document.cookie = "hospitalName=" + this.selectedHospital.label + ";" + expires + ";path=/"; // 30 days
 
             // print cookie username
             let c_username = document.cookie.split(';').find(c => c.includes('username='));

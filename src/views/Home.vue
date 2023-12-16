@@ -1,19 +1,16 @@
 <template>
   <body>
-  <NavBar
-      :visits="visits"
-      @customEvent="parentMethod"
-  />
-  <div class="container-fluid pt-3" style="position: relative">
-    <div class="row">
-      <IsLoading v-if="loading"/>
-      <SideBar :visits="visits"/>
-      <Main
-          :visits="visits"
-          :toggles="toggle"
-      />
+    <div class="watermark">
+      {{ this.username }} @ {{ this.hospitalName }}
     </div>
-  </div>
+    <NavBar :visits="visits" @customEvent="parentMethod" />
+    <div class="container-fluid pt-3" style="position: relative">
+      <div class="row">
+        <IsLoading v-if="loading" />
+        <SideBar :visits="visits" />
+        <Main :visits="visits" :toggles="toggle" />
+      </div>
+    </div>
   </body>
 </template>
 
@@ -57,6 +54,8 @@ export default {
       loading: false,
       overlay: false,
       toggle: false,
+      username: '',
+      hospitalName: ''
     }
   },
   beforeCreate() {
@@ -74,6 +73,11 @@ export default {
     }
   },
   async mounted() {
+
+    // watermark
+    this.username = document.cookie.split(';').find(c => c.includes('username=')).split('=')[1];
+    this.hospitalName = document.cookie.split(';').find(c => c.includes('hospitalName=') || c.includes('hname=')).split('=')[1];
+
     this.loading = true;
     const socket = io(process.env.VUE_APP_APIURL);
     await socket.on("connect", () => {
@@ -115,4 +119,13 @@ body {
   position: relative;
 }
 
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  z-index: 999;
+  font-size: 1.8rem;
+  opacity: 0.2;
+}
 </style>
